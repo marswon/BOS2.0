@@ -1,0 +1,38 @@
+package cn.tripod.bos.web.action.system;
+
+import java.util.List;
+
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import com.opensymphony.xwork2.ActionContext;
+
+import cn.tripod.bos.domain.system.Permission;
+import cn.tripod.bos.service.system.PermissionService;
+import cn.tripod.bos.web.action.common.BaseAction;
+@SuppressWarnings("serial")
+@Controller
+@Scope("prototype")
+@Namespace("/")
+@ParentPackage("json-default")
+public class PermissionAction extends BaseAction<Permission> {
+	@Autowired
+	private PermissionService permissionService;
+	@Action(value="permission_queryPage",results={@Result(name="success",type="json")})
+	public String permission_queryPage(){
+		List<Permission> Permissions= permissionService.findAll();
+		ActionContext.getContext().getValueStack().push(Permissions);
+		return SUCCESS;
+	}
+	
+	@Action(value="permission_save",results={@Result(name="success",location="pages/system/permission.html",type="redirect")})
+	public String save(){
+		permissionService.save(model);
+		return SUCCESS;
+	}
+}
