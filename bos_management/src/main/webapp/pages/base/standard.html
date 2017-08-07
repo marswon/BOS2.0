@@ -30,10 +30,19 @@
 					pageList: [30,50,100],
 					pagination : true,
 					toolbar : toolbar,
-					url : "../../data/standard.json",
+					url : "../../standard_pageQuery.action",
 					idField : 'id',
 					columns : columns
 				});
+				
+				$("#save").click(function(){
+					if($("#standardForm").form("validate")){
+						$("#standardForm").submit();
+					}else{
+						$.messager.alert('警告','未通过校正，请检查数据...','warning');
+					}
+				});
+				
 			});	
 			
 			//工具栏
@@ -42,28 +51,22 @@
 				text : '增加',
 				iconCls : 'icon-add',
 				handler : function(){
-					alert('增加');
+					$("#standardWindow").window("open");
 				}
 			}, {
 				id : 'button-edit',
 				text : '修改',
 				iconCls : 'icon-edit',
 				handler : function(){
-					alert('修改');
-				}
-			},{
-				id : 'button-delete',
-				text : '作废',
-				iconCls : 'icon-cancel',
-				handler : function(){
-					alert('作废');
-				}
-			},{
-				id : 'button-restore',
-				text : '还原',
-				iconCls : 'icon-save',
-				handler : function(){
-					alert('还原');
+					var rows = $("#grid").datagrid("getSelections");
+					if(rows.length!=1){
+						//代表多选或没有选
+						$.messager.alert('提示','只能选择一行数据!','warning'); 
+					}else{
+						var row = rows[0];
+						$("#standardForm").form("load",row);
+						$("#standardWindow").window("open");
+					}
 				}
 			}];
 			
@@ -129,7 +132,7 @@
 
 			<div region="center" style="overflow:auto;padding:5px;" border="false">
 				
-				<form>
+				<form id="standardForm" action="../../saveStandard.action" method="post">
 					<table class="table-edit" width="80%" align="center">
 						<tr class="title">
 							<td colspan="2">收派标准信息

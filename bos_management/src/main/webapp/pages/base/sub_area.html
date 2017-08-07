@@ -117,7 +117,7 @@
 					return "" ;
 				}
 			}, {
-				field : 'addresskey',
+				field : 'keyWords',
 				title : '关键字',
 				width : 120,
 				align : 'center'
@@ -227,9 +227,15 @@
 							</td>
 						</tr>
 						<tr>
+							<td>选择定区</td>
+							<td>
+								<input class="easyui-combobox" name="fixedArea.id" data-options="valueField:'id',textField:'name',url:'../../data/fixedArea.json'" />
+							</td>
+						</tr>
+						<tr>
 							<td>关键字</td>
 							<td>
-								<input type="text" name="addresskey" class="easyui-validatebox" required="true" />
+								<input type="text" name="keyWords" class="easyui-validatebox" required="true" />
 							</td>
 						</tr>
 						<tr>
@@ -255,9 +261,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td>位置信息</td>
+							<td>辅助关键字</td>
 							<td>
-								<input type="text" name="position" class="easyui-validatebox" required="true" style="width:250px;" />
+								<input type="text" name="assistKeyWords" class="easyui-validatebox" required="true" style="width:250px;" />
 							</td>
 						</tr>
 					</table>
@@ -293,13 +299,13 @@
 						<tr>
 							<td>定区编码</td>
 							<td>
-								<input type="text" name="decidedzone.id" class="easyui-validatebox" required="true" />
+								<input type="text" name="fixedArea.id" class="easyui-validatebox" required="true" />
 							</td>
 						</tr>
 						<tr>
 							<td>关键字</td>
 							<td>
-								<input type="text" name="addresskey" class="easyui-validatebox" required="true" />
+								<input type="text" name="keyWords" class="easyui-validatebox" required="true" />
 							</td>
 						</tr>
 						<tr>

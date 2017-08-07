@@ -25,9 +25,63 @@
 				// 对save按钮条件 点击事件
 				$('#save').click(function() {
 					// 对form 进行校验
-					if($('#orderForm').form('validate')) {
-						$('#orderForm').submit();
+					if($('#waybillForm').form('validate')) {
+						$.post("../../waybill_save.action",$("#waybillForm").serialize(),function(data){
+							alert(data.success);
+							if(data.success){
+								$.messager.show({  	
+								  title:'提示窗口',  	
+								  msg:data.msg,  	  
+								});
+								//重置表单
+								$('#waybillForm').get(0).reset();
+								//清空隐藏域
+								$("input[name='order.id']").val('');
+							}
+								
+						});
 					}
+				});
+				//订单号input框失去焦点触发事件
+				
+				$("input[name='order.orderNum']").blur(function(){
+					if(this.value !=''){
+						alert("失去焦点...");
+						$.post("../../findByOrderNum.action",{"orderNum":$(this).val()},function(data){
+						//封装结果数据：{success:true,orderData:{}}
+						if(data.success){
+							//加载传回json数据到对应表格
+							$("#waybillForm").form("load",data.orderData);
+							$("input[name='order.id']").val(data.orderData.id);
+							$("input[name='order.orderNum']").val(data.orderData.orderNum);
+							$("input[name='order.courier.company']").val(data.orderData.courier.company);
+							$("input[name='order.courier.name']").val(data.orderData.courier.name);
+						}else{
+							//若没有查询到该订单记录，则重置表单数据
+							$("#waybillForm").get(0).reset();
+						}
+					});
+					}
+					
+				});
+				
+				
+				//运单号input框失去焦点触发事件
+				$("input[name='wayBillNum']").blur(function(){
+					if(this.value!=''){
+						alert("失去焦点...");
+						$.post("../../findByWayBillNum.action",{"wayBillNum":$(this).val()},function(data){
+						//封装结果数据：{success:true,orderData:{}}
+						if(data.success){
+							//加载传回json数据到对应表格
+							$("#waybillForm").form("load",data.wayBillData);
+						}else{
+							//若没有查询到该订单记录，则重置表单数据
+							$("#waybillForm").get(0).reset();
+						}
+					});
+					}
+					
 				});
 			});
 		</script>
@@ -40,7 +94,9 @@
 			<a id="no" icon="icon-no" href="#" class="easyui-linkbutton" plain="true">取消</a>
 		</div>
 		<div style="width:95%;margin:10px auto">
+			<form id="waybillForm" action="../../waybill_save.action">
 			<div class="table-top">
+				
 				<table class="table-edit" width="95%">
 					<tr class="title">
 						<td colspan="6">单号信息</td>
@@ -263,9 +319,12 @@
 						</tr>
 
 					</table>
+					
 				</div>
 			</div>
-			<div class="clearfix"></div>		
+			
+			<div class="clearfix"></div>	
+			</form>
 		</div>
 	</body>
 
